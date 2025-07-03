@@ -52,7 +52,7 @@ interface AnimalData {
     borregas2: number;
   }
   
-  // Exportando os dados principais com tipos
+  // Exportando os dados principais
   export const dados = {
     quantidade: { machos: [], femeas: [] } as AnimalData,
     nascimentos: { machos: [], femeas: [], total: [] } as NascimentosData,
@@ -123,50 +123,52 @@ interface AnimalData {
     } as SuplementoGrupo
   };
   
-  export let anoAtual: number = 0;
-  export let controlador: number = 0;
-  export let numAnos: number = 0;
-  
-  // Funções com tipagem
-  function calcularReposicaoMachos(): void {
-    dados.quantidade.machos[anoAtual] = Math.ceil(dados.quantidade.femeas[anoAtual] / parametros.machosPorFemeas);
-    
-    if (dados.quantidade.machos[anoAtual] > (dados.quantidade.machos[anoAtual - 1] || 0)) {
-      dados.reposicao.machos[anoAtual] = dados.quantidade.machos[anoAtual] - (dados.quantidade.machos[anoAtual - 1] || 0);
+  // Calculos
+  // Distribuição do rebanho
+  function calcularReposicaoMachos(anoAtual: number, dados: any, parametros: any): void {
+    const valor = Math.ceil(dados.quantidade.femeas[anoAtual] / parametros.machosPorFemeas);
+    dados.quantidade.machos.push(valor);
+    if (valor > (dados.quantidade.machos[anoAtual - 1] || 0)) {
+      dados.reposicao.machos.push(valor - (dados.quantidade.machos[anoAtual - 1] || 0));
     } else {
-      dados.reposicao.machos[anoAtual] = 0;
+      dados.reposicao.machos.push(0);
     }
   }
   
-  function calcularNascimentos(): void {
-    dados.nascimentos.total.push(Math.ceil((dados.quantidade.femeas[anoAtual] * (parametros.fertilidade / 100) * parametros.prolificidade) * parametros.partosPorAno));
-    dados.nascimentos.machos.push(Math.ceil(dados.nascimentos.total[anoAtual]/2));
-    dados.nascimentos.femeas.push(Math.ceil(dados.nascimentos.total[anoAtual]/2));
+  function calcularNascimentos(anoAtual: number, dados: any, parametros: any): void {
+    const total = Math.ceil((dados.quantidade.femeas[anoAtual] * (parametros.fertilidade / 100) * parametros.prolificidade) * parametros.partosPorAno);
+    dados.nascimentos.total.push(total);
+    dados.nascimentos.machos.push(Math.ceil(total / 2));
+    dados.nascimentos.femeas.push(Math.ceil(total / 2));
   }
   
-  function calcularPerdas(): void {
+  //Gestão de perdas e reposição
+  function calcularPerdas(anoAtual: number, dados: any, parametros: any): void {
     dados.perdas.borregos.push(Math.ceil(dados.nascimentos.machos[anoAtual] * (parametros.mortalidadeAbaixoDe1Ano / 100)));
     dados.perdas.borregas.push(Math.ceil(dados.nascimentos.femeas[anoAtual] * (parametros.mortalidadeAbaixoDe1Ano / 100)));
-    dados.perdas.femeas.push(Math.ceil(dados.quantidade.femeas[anoAtual] * (parametros.mortalidadeAcimaDe1Ano / 100))); 
-    dados.perdas.machos.push(0);
+    dados.perdas.femeas.push(Math.ceil(dados.quantidade.femeas[anoAtual] * (parametros.mortalidadeAcimaDe1Ano / 100)));
+    dados.perdas.machos && dados.perdas.machos.push(0); // Se existir machos
   }
   
-  function calcularDescartes(): void {
+  function calcularDescartes(anoAtual: number, dados: any, parametros: any): void {
     dados.descartes.femeas.push(Math.ceil(dados.quantidade.femeas[anoAtual] * (parametros.taxaDescartes / 100)));
   }
   
-  function calcularReposicaoFemeas(): void {
+  function calcularReposicaoFemeas(anoAtual: number, dados: any, parametros: any): void {
+    let valor;
     if (dados.quantidade.femeas[anoAtual] + dados.quantidade.femeas[anoAtual] * (parametros.crescimento / 100) < parametros.maxFemeas) {
-      dados.reposicao.borregas.push(Math.ceil(dados.quantidade.femeas[anoAtual] * (parametros.crescimento / 100) + dados.perdas.femeas[anoAtual] + dados.descartes.femeas[anoAtual]));
+      valor = Math.ceil(dados.quantidade.femeas[anoAtual] * (parametros.crescimento / 100) + dados.perdas.femeas[anoAtual] + dados.descartes.femeas[anoAtual]);
     } else if (dados.quantidade.femeas[anoAtual] + dados.quantidade.femeas[anoAtual] * (parametros.crescimento / 100) === parametros.maxFemeas) {
-      dados.reposicao.borregas.push(dados.perdas.femeas[anoAtual] + dados.descartes.femeas[anoAtual]);
+      valor = dados.perdas.femeas[anoAtual] + dados.descartes.femeas[anoAtual];
     } else {
-      dados.reposicao.borregas.push((dados.quantidade.femeas[anoAtual] - dados.perdas.femeas[anoAtual] - dados.descartes.femeas[anoAtual] - parametros.maxFemeas) * -1);
+      valor = (dados.quantidade.femeas[anoAtual] - dados.perdas.femeas[anoAtual] - dados.descartes.femeas[anoAtual] - parametros.maxFemeas) * -1;
     }
-    dados.reposicao.femeas.push(0);
+    dados.reposicao.borregas.push(valor);
+    dados.reposicao.femeas && dados.reposicao.femeas.push(0); // Se existir femeas
   }
   
-  function calcularVendas(): void {
+  // Controle de vendas e compras
+  function calcularVendas(anoAtual: number, dados: any, parametros: any): void {
     dados.vendas.borregos.push((dados.nascimentos.machos[anoAtual] - dados.perdas.borregos[anoAtual]));
     dados.compras.borregos.push(dados.reposicao.machos[anoAtual]);
   
@@ -184,48 +186,67 @@ interface AnimalData {
     } 
   }
   
-  function calcularEstoque(): void {
-    dados.estoqueFinal.femeas[anoAtual] = dados.quantidade.femeas[anoAtual] - dados.perdas.femeas[anoAtual] - dados.descartes.femeas[anoAtual];
+  // Estoque final
+  function calcularEstoque(anoAtual: number, dados: any): void {
+    dados.estoqueFinal.femeas.push(dados.quantidade.femeas[anoAtual] - dados.perdas.femeas[anoAtual] - dados.descartes.femeas[anoAtual]);
   }
   
-  function calcularPeso(): void {
+  // Peso estimado do rebanho
+  function calcularPeso(anoAtual: number, dados: any, parametros: any): void {
     dados.peso.machos.push(dados.quantidade.machos[anoAtual] * parametros.pesoMedio.machos);
     dados.peso.femeas.push(dados.estoqueFinal.femeas[anoAtual] * parametros.pesoMedio.femeas + dados.reposicao.borregas[anoAtual] * parametros.pesoMedio.borregas);
     dados.peso.total.push(dados.peso.machos[anoAtual] + dados.peso.femeas[anoAtual]);
   }
   
-  function calcularEUA(): void {
+  function calcularEUA(anoAtual: number, dados: any, parametros: any): void {
     dados.Eua.femeas.push((Math.pow(parametros.pesoMedio.femeas, 0.75) / Math.pow(450, 0.75)) * dados.estoqueFinal.femeas[anoAtual] + (Math.pow(parametros.pesoMedio.borregas, 0.75) / Math.pow(450, 0.75)) * dados.reposicao.borregas[anoAtual]);
     dados.Eua.machos.push((Math.pow(parametros.pesoMedio.machos, 0.75) / Math.pow(450, 0.75)) * dados.quantidade.machos[anoAtual]);
     dados.Eua.total.push(dados.Eua.femeas[anoAtual] + dados.Eua.machos[anoAtual]);
   }
   
-  function calcularCusto(): void {
+  // Receita
+  function calcularCusto(anoAtual: number, dados: any, parametros: any): void {
     dados.receita.push(dados.vendas.borregos[anoAtual] * parametros.pesoAbate * parametros.precoKg + dados.vendas.borregas[anoAtual] * parametros.pesoAbate * parametros.precoKg);
   }
   
-  function atualizarRebanho(): void {
+  // Atualiza rebanho para o proximo ano
+  function atualizarRebanho(anoAtual: number, dados: any): void {
     dados.quantidade.femeas.push(dados.estoqueFinal.femeas[anoAtual] + dados.reposicao.borregas[anoAtual]);
   }
   
-  // Função principal para executar todos os cálculos
-  export function executarCalculos(): void {
-    calcularReposicaoMachos();
-    calcularNascimentos();
-    calcularPerdas();
-    calcularDescartes();
-    calcularReposicaoFemeas();
-    calcularVendas();
-    calcularEstoque();
-    calcularPeso();
-    calcularEUA();
-    calcularCusto();
-    atualizarRebanho();
+  // Executar todos os cálculos
+  export function executarCalculos(anoAtual: number, dados: any, parametros: any): void {
+    calcularReposicaoMachos(anoAtual, dados, parametros);
+    calcularNascimentos(anoAtual, dados, parametros);
+    calcularPerdas(anoAtual, dados, parametros);
+    calcularDescartes(anoAtual, dados, parametros);
+    calcularReposicaoFemeas(anoAtual, dados, parametros);
+    calcularVendas(anoAtual, dados, parametros);
+    calcularEstoque(anoAtual, dados);
+    calcularPeso(anoAtual, dados, parametros);
+    calcularEUA(anoAtual, dados, parametros);
+    calcularCusto(anoAtual, dados, parametros);
+    atualizarRebanho(anoAtual, dados);
   }
   
-  // Função para processar dados do formulário
-  export function processarDadosFormulario(formValues: Record<string, any>): void {
-    // Atualizando dados com valores do formulário
+  // Dados do formulário
+  export function processarDadosFormulario(formValues: Record<string, any>) {
+    // Limpar arrays globais antes de simular novamente
+    Object.keys(dados).forEach(key => {
+      if (Array.isArray((dados as any)[key])) {
+        (dados as any)[key] = [];
+      } else if (typeof (dados as any)[key] === 'object' && (dados as any)[key] !== null) {
+        Object.keys((dados as any)[key]).forEach(subKey => {
+          if (Array.isArray(((dados as any)[key] as any)[subKey])) {
+            ((dados as any)[key] as any)[subKey] = [];
+          }
+        });
+      }
+    });
+    // Limpar arrays de consumo e derivados
+    resetConsumoArrays();
+
+    // Dados = Inputs
     dados.quantidade.femeas.push(parseFloat(formValues.femaleInput));
     parametros.maxFemeas = parseFloat(formValues.maxFemaleInput);
     parametros.machosPorFemeas = parseFloat(formValues.maleFemaleInput);
@@ -246,7 +267,6 @@ interface AnimalData {
     parametros.custeioTotal = parseFloat(formValues.custeioTotalInput);
     const numAnos = parseFloat(formValues.anosSimuladosInput);
 
-    // Atualizando suplementos
     suplementos.materiaSeca.femeas = parseFloat(formValues.FmateriaSecaInput) / 100;
     suplementos.materiaSeca.machos = parseFloat(formValues.MmateriaSecaInput) / 100;
     suplementos.materiaSeca.borregos = parseFloat(formValues.BmateriaSecaInput) / 100;
@@ -273,13 +293,16 @@ interface AnimalData {
     suplementos.materiaSecaConcentrado.borregas1 = parseFloat(formValues.BA1materiaSeca_concentradoInput) / 100;
     suplementos.materiaSecaConcentrado.borregas2 = parseFloat(formValues.BA2materiaSeca_concentradoInput) / 100;
 
-    // Executar cálculos para todos os anos
+    // Simulação
     let anoAtual = 0;
     while (anoAtual < numAnos) {
-      executarCalculos();
+      console.log(`Processando ano ${anoAtual}`);
+      executarCalculos(anoAtual, dados, parametros);
+      calcularInformacoes(anoAtual);
       anoAtual++;
     }
+    return dados;
   }
   
-  // Importação no final para evitar problemas de importação circular
-    
+  import { calcularInformacoes, resetConsumoArrays } from './add';
+      
