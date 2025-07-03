@@ -13,14 +13,13 @@ export default function Home() {
       {/* Header */}
       <View style={styles.header}>
         <Image
-          source={require('../../assets/images/rebanhologo.png')} // ajuste se o caminho for diferente
-           style={styles.logo}
-        />
-         <Text style={[styles.headerTitle,] }>AGROPLAN</Text>
-       </View>
+          source={require('../../assets/images/rebanhologo.png')} 
+          style={styles.logo}/>
+         <Text style={[styles.headerTitle,] }>PLANEJA PEC</Text>
+      </View>
 
 
-    <View style={styles.separator} />
+      <View style={styles.separator} />
 
 
       {/* Introdução */}
@@ -28,15 +27,15 @@ export default function Home() {
         <ImageBackground
           source={require('../../assets/images/Tela Inicial (1).png')}
           style={styles.intro}
-          resizeMode="cover"
-        >
+          resizeMode="cover">
         <Text style={[styles.introTitle, { color: "white" }]}>
-          Otimizando o{'\n'}planejamento
+          Otimização do{'\n'}planejamento
         </Text>
         <Text style={[styles.introText, { color: "white" }]}>
-          Transforme sua gestão: planeja a evolução do seu rebanho e a necessidade alimentar de forma simples
-        </Text>
-        <Link href="src/formularioScreen" style={styles.button} asChild>
+          Planejamento eficiente: Gerencie a evolução do seu rebanho e organize as necessidades alimentares com precisão.        
+        </Text> 
+        {/* Substituir o link */}
+        <Link href="/src/formularioScreen" style={styles.button} asChild>
           <Text style={styles.buttonText}>Fazer simulação</Text>
         </Link>
         </ImageBackground>
@@ -47,12 +46,13 @@ export default function Home() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>OBJETIVO</Text>
         <Text style={styles.sectionText}>
-          Buscamos auxiliar os produtores rurais a enfrentarem os desafios das variações sazonais na disponibilidade de forragem e da falta de assistência técnica. A ferramenta visa otimizar o planejamento forrageiro, reduzindo desperdícios e aumentando a produtividade, por meio do registro contínuo de dados sobre peso, idade e consumo alimentar dos animais.        
-        </Text>
+          Nosso objetivo é desenvolver um sistema mobile inovador que permita a simulação da evolução de rebanhos de pequenos ruminantes e o planejamento alimentar no Nordeste brasileiro. Buscamos auxiliar os produtores rurais a enfrentarem os desafios das variações sazonais na disponibilidade de forragem. A ferramenta visa otimizar o planejamento forrageiro, reduzindo desperdícios e custo de produção.
+          {'\n'} Além disso, o sistema possibilitará a simulação de diferentes cenários de manejo e estratégias de suplementação alimentar, garantindo cálculos precisos que considerem os processos biológicos. Com uma interface amigável e acessível via navegador, queremos que pequenos e médios produtores possam utilizá-lo facilmente. Ao promover o uso eficiente dos recursos disponíveis, nossa proposta contribuirá para a sustentabilidade da pecuária e para a redução de custos operacionais, transformando a administração rural e fortalecendo a zootecnia de precisão na região.        </Text>
         <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity style={styles.button2}>
-          <Text style={styles.buttonText2}>Saiba Mais</Text>
-        </TouchableOpacity></View>
+          <TouchableOpacity style={styles.button2}> {/* Sujestão */}
+            <Text style={styles.buttonText2}>Saiba Mais</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.gridContainer}>
           <View style={styles.row}>
@@ -75,7 +75,7 @@ export default function Home() {
           <Ionicons name="stopwatch-sharp" size={28} color="#FFD700" />
           <Text style={styles.cardTitle}>Economia de tempo</Text>
           <Text style={styles.cardText}>
-           O sistema automatiza cálculos da evolução do rebanho e da necessidade de alimentação a partir dos dados inseridos, permitindo ao criador concentrar-se em outras atividades e agilizar sua rotina.      
+            O sistema automatiza cálculos da evolução do rebanho e da necessidade de alimentação a partir dos dados inseridos, permitindo ao criador concentrar-se em outras atividades e agilizar sua rotina.          
           </Text>
         </View>
 
@@ -89,9 +89,9 @@ export default function Home() {
 
         <View style={styles.card}>
           <Ionicons name="heart-circle" size={28} color="#FFD700"/>
-          <Text style={styles.cardTitle}>Bem-Estar Animal</Text>
+          <Text style={styles.cardTitle}>Eficiência de produção</Text>
           <Text style={styles.cardText}>
-            Com dietas adaptadas para cada grupo de animais, o sistema ajuda a prevenir doenças e melhorar a imunidade, promovendo um crescimento saudável e evitando problemas comuns, como subalimentação ou excesso de nutrientes.          
+            Por meio das simulações, é possível estimar a quantidade adequada de alimento a ser produzido ou adquirido, assim como projetar a quantidade de animais disponíveis para produção e comercialização, visando otimizar a eficiência do rebanho.         
           </Text>
         </View>
       </View>
@@ -99,14 +99,12 @@ export default function Home() {
       {/* Rodapé */}
       <View style={styles.footer}>
         <View style={styles.footer2}>
-        <Image
-          source={require('../../assets/images/logos-ifce-cits.png')}
-          style={styles.footerImage}
-        />
-        <Image
-          source={require('../../assets/images/logos-gov-midr.png')}
-          style={styles.footerImage}
-        />
+          <Image
+            source={require('../../assets/images/logos-ifce-cits.png')}
+            style={styles.footerImage}/>
+          <Image
+            source={require('../../assets/images/logos-gov-midr.png')}
+            style={styles.footerImage}/>
         </View>
       </View>
 
@@ -119,7 +117,6 @@ const styles = StyleSheet.create({
     flex: 1, 
     backgroundColor: '#fff' },
 
-  //header
   header: {
     padding: 15,
     alignItems: 'center',
@@ -137,10 +134,10 @@ const styles = StyleSheet.create({
     color: '#2E8957' },
 
   separator: {
-  height: 4,
-  backgroundColor: '#2E8957',
-  width: '100%',
-},
+    height: 4,
+    backgroundColor: '#2E8957',
+    width: '100%',
+  },
 
 
   //introdução
@@ -203,13 +200,13 @@ const styles = StyleSheet.create({
   },
 
   button2: {
-  backgroundColor: '#2E8957',
-  paddingVertical: 10,
-  paddingHorizontal: 25,
-  borderRadius: 10,
-  marginBottom: 20,
-  alignSelf: 'center',
-  maxWidth: 200,
+    backgroundColor: '#2E8957',
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    marginBottom: 20,
+    alignSelf: 'center',
+    maxWidth: 200,
   },
 
   buttonText2:{
@@ -218,80 +215,80 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-gridContainer: {
-  marginTop: 10,
-  alignItems: 'center',
-},
+  gridContainer: {
+    marginTop: 10,
+    alignItems: 'center',
+  },
 
-row: {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  marginBottom: 10,
-},
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
 
-gridImage: {
-  width: 160,
-  height: 160,
-  marginHorizontal: 8,
-  borderRadius: 5,
-  resizeMode: 'cover',
-},
+  gridImage: {
+    width: 160,
+    height: 160,
+    marginHorizontal: 8,
+    borderRadius: 5,
+    resizeMode: 'cover',
+  },
 
 
 //benefícios
- section2: {
-  padding: 20,
-  backgroundColor: '#2E8957',
-  alignItems: 'center',
-},
-
-card: {
-  borderColor: '#fff',
-  borderWidth: 2, 
-  borderStyle: 'dotted',
-  borderRadius: 8,
-  padding: 16,
-  marginBottom: 16,
-  width: '100%',
+  section2: {
+    padding: 20,
+    backgroundColor: '#2E8957',
+    alignItems: 'center',
   },
 
-cardTitle: { fontWeight: 'bold',
-  fontSize: 20,
-  color: '#fff',
-  marginTop: 8,
-  marginBottom: 6,},
-  cardText: {
-   fontSize: 16,
-  color: '#fff',
-  textAlign: 'justify', 
-},
+  card: {
+    borderColor: '#fff',
+    borderWidth: 2, 
+    borderStyle: 'dotted',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    width: '100%',
+    },
 
-  //rodape
-footer: {
-  backgroundColor: '#f8f9fa',
-  paddingVertical: 20,
-  alignItems: 'center',
-  shadowColor: '#000',
-  shadowOffset: {
-    width: 0,
-    height: -2,
+  cardTitle: { fontWeight: 'bold',
+    fontSize: 20,
+    color: '#fff',
+    marginTop: 8,
+    marginBottom: 6,},
+    cardText: {
+    fontSize: 16,
+    color: '#fff',
+    textAlign: 'justify', 
   },
-  shadowOpacity: 0.25,
-  shadowRadius: 2.84,
-  elevation: 3,
-},
 
-footer2: {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignItems: 'center',
-  columnGap: 30, // mais espaço entre as imagens (caso não funcione, veja alternativa abaixo)
-},
+    //rodape
+  footer: {
+    backgroundColor: '#f8f9fa',
+    paddingVertical: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 2.84,
+    elevation: 3,
+    },
 
-footerImage: {
-  width: 180, // imagem maior
-  height: 80,
-  resizeMode: 'contain',
-},
+  footer2: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    columnGap: 30, // mais espaço entre as imagens (caso não funcione, veja alternativa abaixo)
+  },
 
-});
+  footerImage: {
+    width: 180, // imagem maior
+    height: 80,
+    resizeMode: 'contain',
+  },
+
+  });
