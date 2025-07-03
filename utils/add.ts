@@ -30,7 +30,6 @@ interface ConsumoGrupoCompleto extends ConsumoGrupo {
 
 // Importações com tipos
 import {
-  anoAtual,
   dados,
   parametros,
   suplementos
@@ -142,8 +141,9 @@ const ConcentradoSeca: ConsumoGrupoCompleto = {
   total_per: []
 };
 
-// Funções de cálculo com tipagem
-function calcularConsumoTotal(): void {
+// Calculos
+// Consumo de materia seca
+function calcularConsumoTotal(anoAtual: number): void {
   // Fêmeas
   consumo.femeas.push(parametros.pesoMedio.femeas * suplementos.materiaSeca.femeas);
   consumo.femeas_reb.push(consumo.femeas[anoAtual] * dados.quantidade.femeas[anoAtual]);
@@ -195,7 +195,8 @@ function calcularConsumoTotal(): void {
   );
 }
 
-function calcularVolumoso(): void {
+// Consumo de volumoso (Kg Materia Seca)
+function calcularVolumoso(anoAtual: number): void {
   // Fêmeas
   Volumoso.femeas.push(consumo.femeas[anoAtual] * suplementos.volumoso.femeas);
   Volumoso.femeas_reb.push(consumo.femeas_reb[anoAtual] * suplementos.volumoso.femeas);
@@ -247,31 +248,32 @@ function calcularVolumoso(): void {
   );
 }
 
-function calcularMateriaSecaVolumoso(): void {
+// Consumo de materia seca de volumoso (Kg Materia Natural)
+function calcularMateriaSecaVolumoso(anoAtual: number): void {
   // Fêmeas
-  VolumosoSeca.femeas.push(Volumoso.femeas[anoAtual] / suplementos.materiaSecaVolumoso.femeas);
-  VolumosoSeca.femeas_reb.push(Volumoso.femeas_reb[anoAtual] / suplementos.materiaSecaVolumoso.femeas);
-  VolumosoSeca.femeas_per.push(Volumoso.femeas_per[anoAtual] / suplementos.materiaSecaVolumoso.femeas);
+  VolumosoSeca.femeas.push(suplementos.materiaSecaVolumoso.femeas > 0 ? Volumoso.femeas[anoAtual] / suplementos.materiaSecaVolumoso.femeas : 0);
+  VolumosoSeca.femeas_reb.push(suplementos.materiaSecaVolumoso.femeas > 0 ? Volumoso.femeas_reb[anoAtual] / suplementos.materiaSecaVolumoso.femeas : 0);
+  VolumosoSeca.femeas_per.push(suplementos.materiaSecaVolumoso.femeas > 0 ? Volumoso.femeas_per[anoAtual] / suplementos.materiaSecaVolumoso.femeas : 0);
 
   // Machos
-  VolumosoSeca.machos.push(Volumoso.machos[anoAtual] / suplementos.materiaSecaVolumoso.machos);
-  VolumosoSeca.machos_reb.push(Volumoso.machos_reb[anoAtual] / suplementos.materiaSecaVolumoso.machos);
-  VolumosoSeca.machos_per.push(Volumoso.machos_per[anoAtual] / suplementos.materiaSecaVolumoso.machos);
+  VolumosoSeca.machos.push(suplementos.materiaSecaVolumoso.machos > 0 ? Volumoso.machos[anoAtual] / suplementos.materiaSecaVolumoso.machos : 0);
+  VolumosoSeca.machos_reb.push(suplementos.materiaSecaVolumoso.machos > 0 ? Volumoso.machos_reb[anoAtual] / suplementos.materiaSecaVolumoso.machos : 0);
+  VolumosoSeca.machos_per.push(suplementos.materiaSecaVolumoso.machos > 0 ? Volumoso.machos_per[anoAtual] / suplementos.materiaSecaVolumoso.machos : 0);
 
   // Borregos
-  VolumosoSeca.borregos.push(Volumoso.borregos[anoAtual] / suplementos.materiaSecaVolumoso.borregos);
-  VolumosoSeca.borregos_reb.push(Volumoso.borregos_reb[anoAtual] / suplementos.materiaSecaVolumoso.borregos);
-  VolumosoSeca.borregos_per.push(Volumoso.borregos_per[anoAtual] / suplementos.materiaSecaVolumoso.borregos);
+  VolumosoSeca.borregos.push(suplementos.materiaSecaVolumoso.borregos > 0 ? Volumoso.borregos[anoAtual] / suplementos.materiaSecaVolumoso.borregos : 0);
+  VolumosoSeca.borregos_reb.push(suplementos.materiaSecaVolumoso.borregos > 0 ? Volumoso.borregos_reb[anoAtual] / suplementos.materiaSecaVolumoso.borregos : 0);
+  VolumosoSeca.borregos_per.push(suplementos.materiaSecaVolumoso.borregos > 0 ? Volumoso.borregos_per[anoAtual] / suplementos.materiaSecaVolumoso.borregos : 0);
 
   // Borregas1
-  VolumosoSeca.borregas1.push(Volumoso.borregas1[anoAtual] / suplementos.materiaSecaVolumoso.borregas1);
-  VolumosoSeca.borregas1_reb.push(Volumoso.borregas1_reb[anoAtual] / suplementos.materiaSecaVolumoso.borregas1);
-  VolumosoSeca.borregas1_per.push(Volumoso.borregas1_per[anoAtual] / suplementos.materiaSecaVolumoso.borregas1);
+  VolumosoSeca.borregas1.push(suplementos.materiaSecaVolumoso.borregas1 > 0 ? Volumoso.borregas1[anoAtual] / suplementos.materiaSecaVolumoso.borregas1 : 0);
+  VolumosoSeca.borregas1_reb.push(suplementos.materiaSecaVolumoso.borregas1 > 0 ? Volumoso.borregas1_reb[anoAtual] / suplementos.materiaSecaVolumoso.borregas1 : 0);
+  VolumosoSeca.borregas1_per.push(suplementos.materiaSecaVolumoso.borregas1 > 0 ? Volumoso.borregas1_per[anoAtual] / suplementos.materiaSecaVolumoso.borregas1 : 0);
 
   // Borregas2
-  VolumosoSeca.borregas2.push(Volumoso.borregas2[anoAtual] / suplementos.materiaSecaVolumoso.borregas2);
-  VolumosoSeca.borregas2_reb.push(Volumoso.borregas2_reb[anoAtual] / suplementos.materiaSecaVolumoso.borregas2);
-  VolumosoSeca.borregas2_per.push(Volumoso.borregas2_per[anoAtual] / suplementos.materiaSecaVolumoso.borregas2);
+  VolumosoSeca.borregas2.push(suplementos.materiaSecaVolumoso.borregas2 > 0 ? Volumoso.borregas2[anoAtual] / suplementos.materiaSecaVolumoso.borregas2 : 0);
+  VolumosoSeca.borregas2_reb.push(suplementos.materiaSecaVolumoso.borregas2 > 0 ? Volumoso.borregas2_reb[anoAtual] / suplementos.materiaSecaVolumoso.borregas2 : 0);
+  VolumosoSeca.borregas2_per.push(suplementos.materiaSecaVolumoso.borregas2 > 0 ? Volumoso.borregas2_per[anoAtual] / suplementos.materiaSecaVolumoso.borregas2 : 0);
 
   // Totais
   VolumosoSeca.total.push(
@@ -299,7 +301,8 @@ function calcularMateriaSecaVolumoso(): void {
   );
 }
 
-function calcularConcentrado(): void {
+// Consumo de concentrado (Kg Materia Seca)
+function calcularConcentrado(anoAtual: number): void {
   // Fêmeas
   Concentrado.femeas.push(consumo.femeas[anoAtual] - Volumoso.femeas[anoAtual]);
   Concentrado.femeas_reb.push(consumo.femeas_reb[anoAtual] - Volumoso.femeas_reb[anoAtual]);
@@ -351,31 +354,32 @@ function calcularConcentrado(): void {
   );
 }
 
-function calcularMateriaSecaConcentrado(): void {
+// Consumo de materia seca de concentrado (Kg Materia Natural)
+function calcularMateriaSecaConcentrado(anoAtual: number): void {
   // Fêmeas
-  ConcentradoSeca.femeas.push(Concentrado.femeas[anoAtual] / suplementos.materiaSecaConcentrado.femeas);
-  ConcentradoSeca.femeas_reb.push(Concentrado.femeas_reb[anoAtual] / suplementos.materiaSecaConcentrado.femeas);
-  ConcentradoSeca.femeas_per.push(Concentrado.femeas_per[anoAtual] / suplementos.materiaSecaConcentrado.femeas);
+  ConcentradoSeca.femeas.push(suplementos.materiaSecaConcentrado.femeas > 0 ? Concentrado.femeas[anoAtual] / suplementos.materiaSecaConcentrado.femeas : 0);
+  ConcentradoSeca.femeas_reb.push(suplementos.materiaSecaConcentrado.femeas > 0 ? Concentrado.femeas_reb[anoAtual] / suplementos.materiaSecaConcentrado.femeas : 0);
+  ConcentradoSeca.femeas_per.push(suplementos.materiaSecaConcentrado.femeas > 0 ? Concentrado.femeas_per[anoAtual] / suplementos.materiaSecaConcentrado.femeas : 0);
 
   // Machos
-  ConcentradoSeca.machos.push(Concentrado.machos[anoAtual] / suplementos.materiaSecaConcentrado.machos);
-  ConcentradoSeca.machos_reb.push(Concentrado.machos_reb[anoAtual] / suplementos.materiaSecaConcentrado.machos);
-  ConcentradoSeca.machos_per.push(Concentrado.machos_per[anoAtual] / suplementos.materiaSecaConcentrado.machos);
+  ConcentradoSeca.machos.push(suplementos.materiaSecaConcentrado.machos > 0 ? Concentrado.machos[anoAtual] / suplementos.materiaSecaConcentrado.machos : 0);
+  ConcentradoSeca.machos_reb.push(suplementos.materiaSecaConcentrado.machos > 0 ? Concentrado.machos_reb[anoAtual] / suplementos.materiaSecaConcentrado.machos : 0);
+  ConcentradoSeca.machos_per.push(suplementos.materiaSecaConcentrado.machos > 0 ? Concentrado.machos_per[anoAtual] / suplementos.materiaSecaConcentrado.machos : 0);
 
   // Borregos
-  ConcentradoSeca.borregos.push(Concentrado.borregos[anoAtual] / suplementos.materiaSecaConcentrado.borregos);
-  ConcentradoSeca.borregos_reb.push(Concentrado.borregos_reb[anoAtual] / suplementos.materiaSecaConcentrado.borregos);
-  ConcentradoSeca.borregos_per.push(Concentrado.borregos_per[anoAtual] / suplementos.materiaSecaConcentrado.borregos);
+  ConcentradoSeca.borregos.push(suplementos.materiaSecaConcentrado.borregos > 0 ? Concentrado.borregos[anoAtual] / suplementos.materiaSecaConcentrado.borregos : 0);
+  ConcentradoSeca.borregos_reb.push(suplementos.materiaSecaConcentrado.borregos > 0 ? Concentrado.borregos_reb[anoAtual] / suplementos.materiaSecaConcentrado.borregos : 0);
+  ConcentradoSeca.borregos_per.push(suplementos.materiaSecaConcentrado.borregos > 0 ? Concentrado.borregos_per[anoAtual] / suplementos.materiaSecaConcentrado.borregos : 0);
 
   // Borregas1
-  ConcentradoSeca.borregas1.push(Concentrado.borregas1[anoAtual] / suplementos.materiaSecaConcentrado.borregas1);
-  ConcentradoSeca.borregas1_reb.push(Concentrado.borregas1_reb[anoAtual] / suplementos.materiaSecaConcentrado.borregas1);
-  ConcentradoSeca.borregas1_per.push(Concentrado.borregas1_per[anoAtual] / suplementos.materiaSecaConcentrado.borregas1);
+  ConcentradoSeca.borregas1.push(suplementos.materiaSecaConcentrado.borregas1 > 0 ? Concentrado.borregas1[anoAtual] / suplementos.materiaSecaConcentrado.borregas1 : 0);
+  ConcentradoSeca.borregas1_reb.push(suplementos.materiaSecaConcentrado.borregas1 > 0 ? Concentrado.borregas1_reb[anoAtual] / suplementos.materiaSecaConcentrado.borregas1 : 0);
+  ConcentradoSeca.borregas1_per.push(suplementos.materiaSecaConcentrado.borregas1 > 0 ? Concentrado.borregas1_per[anoAtual] / suplementos.materiaSecaConcentrado.borregas1 : 0);
 
   // Borregas2
-  ConcentradoSeca.borregas2.push(Concentrado.borregas2[anoAtual] / suplementos.materiaSecaConcentrado.borregas2);
-  ConcentradoSeca.borregas2_reb.push(Concentrado.borregas2_reb[anoAtual] / suplementos.materiaSecaConcentrado.borregas2);
-  ConcentradoSeca.borregas2_per.push(Concentrado.borregas2_per[anoAtual] / suplementos.materiaSecaConcentrado.borregas2);
+  ConcentradoSeca.borregas2.push(suplementos.materiaSecaConcentrado.borregas2 > 0 ? Concentrado.borregas2[anoAtual] / suplementos.materiaSecaConcentrado.borregas2 : 0);
+  ConcentradoSeca.borregas2_reb.push(suplementos.materiaSecaConcentrado.borregas2 > 0 ? Concentrado.borregas2_reb[anoAtual] / suplementos.materiaSecaConcentrado.borregas2 : 0);
+  ConcentradoSeca.borregas2_per.push(suplementos.materiaSecaConcentrado.borregas2 > 0 ? Concentrado.borregas2_per[anoAtual] / suplementos.materiaSecaConcentrado.borregas2 : 0);
 
   // Totais
   ConcentradoSeca.total.push(
@@ -403,23 +407,30 @@ function calcularMateriaSecaConcentrado(): void {
   );
 }
 
-// Função principal com tipagem
-export function calcularInformacoes(): void {
-  calcularConsumoTotal();
-  calcularVolumoso();
-  calcularMateriaSecaVolumoso();
-  calcularConcentrado();
-  calcularMateriaSecaConcentrado();
-  
-  // Nota: Para React Native, você precisará substituir as manipulações de DOM
-  // por atualizações de estado ou chamadas a componentes específicos
+// Executar todos os calculos
+function calcularInformacoes(anoAtual: number): void {
+  calcularConsumoTotal(anoAtual);
+  calcularVolumoso(anoAtual);
+  calcularMateriaSecaVolumoso(anoAtual);
+  calcularConcentrado(anoAtual);
+  calcularMateriaSecaConcentrado(anoAtual);
 }
 
-// Exportações para uso em outros módulos
+// Função para limpar todos os arrays globais de consumo e derivados
+function resetConsumoArrays() {
+  const allArrays = [consumo, Volumoso, VolumosoSeca, Concentrado, ConcentradoSeca];
+  allArrays.forEach(obj => {
+    Object.keys(obj).forEach(key => {
+      if (Array.isArray((obj as any)[key])) {
+        (obj as any)[key] = [];
+      }
+    });
+  });
+}
+
 export {
-  Concentrado,
-  ConcentradoSeca, consumo,
-  Volumoso,
+  calcularInformacoes, Concentrado,
+  ConcentradoSeca, consumo, resetConsumoArrays, Volumoso,
   VolumosoSeca
 };
 
